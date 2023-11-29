@@ -128,17 +128,13 @@ movies = Table('movies', movies)
 Database = DB()
 Database.insert(movies)
 
-comedy = movies.filter(lambda m: m['Genre'] == 'Comedy')
-ww_gross_comedy = comedy.aggregate(lambda m: sum(m)/len(m), 'Worldwide Gross')
-print(ww_gross_comedy)
+print(movies.filter(lambda m: m['Genre'] == 'Comedy').aggregate(lambda m: sum(m)/len(m), 'Worldwide Gross'))
 
-drama = movies.filter(lambda m: m['Genre'] == 'Drama')
-drama_min = drama.aggregate(min, 'Audience score %')
-print(drama_min)
 
-fantasy = movies.filter(lambda m: m['Genre'] == 'Fantasy')
-fantasy_count = fantasy.aggregate(len, 'Film')
-print(fantasy_count)
+print(movies.filter(lambda m: m['Genre'] == 'Drama').aggregate(min, 'Audience score %'))
+
+print(movies.filter(lambda m: m['Genre'] == 'Fantasy').aggregate(len, 'Film'))
+
 
 dict = {}
 dict['Film'] = 'The Shape of Water'
@@ -151,8 +147,7 @@ dict['Worldwide Gross'] = '195.3'
 dict['Year'] = '2017'
 movies.insert_row(dict)
 
-fantasy = movies.filter(lambda m: m['Genre'] == 'Fantasy')
-fantasy_count = fantasy.aggregate(len, 'Film')
-print(fantasy_count)
+print(movies.filter(lambda m: m['Genre'] == 'Fantasy').aggregate(len, 'Film'))
+
 
 movies.update_row('Film', 'A Serious Man', 'Year', '2022')
