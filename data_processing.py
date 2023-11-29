@@ -100,3 +100,24 @@ class Table:
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+movies = []
+with open(os.path.join(__location__, 'movies.csv')) as f:
+    rows = csv.DictReader(f)
+    for r in rows:
+        movies.append(dict(r))
+
+movies = Table('movies', movies)
+Database = DB()
+Database.insert(movies)
+
+comedy = movies.filter(lambda m: m['Genre'] == 'Comedy')
+ww_gross_comedy = comedy.aggregate(lambda m: sum(m)/len(m), 'Worldwide Gross')
+print(ww_gross_comedy)
+
+drama = movies.filter(lambda m: m['Genre'] == 'Drama')
+drama_min = drama.aggregate(min, 'Audience score %')
+print(drama_min)
