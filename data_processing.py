@@ -100,6 +100,20 @@ class Table:
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
+    def insert_row(self, dict):
+        '''
+        This method inserts a dictionary, dict, into a Table object, effectively adding a row to the Table.
+        '''
+        self.table += [dict]
+
+    def update_row(self, primary_attribute, primary_attribute_value, update_attribute, update_value):
+        '''
+        This method updates the current value of update_attribute to update_value
+        '''
+        for i in self.table:
+            if i[primary_attribute] == primary_attribute_value:
+                i[update_attribute] = update_value
+
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -121,3 +135,24 @@ print(ww_gross_comedy)
 drama = movies.filter(lambda m: m['Genre'] == 'Drama')
 drama_min = drama.aggregate(min, 'Audience score %')
 print(drama_min)
+
+fantasy = movies.filter(lambda m: m['Genre'] == 'Fantasy')
+fantasy_count = fantasy.aggregate(len, 'Film')
+print(fantasy_count)
+
+dict = {}
+dict['Film'] = 'The Shape of Water'
+dict['Genre'] = 'Fantasy'
+dict['Lead Studio'] = 'Fox'
+dict['Audience score %'] = '72'
+dict['Profitability'] = '9.765'
+dict['Rotten Tomatoes %'] = '92'
+dict['Worldwide Gross'] = '195.3'
+dict['Year'] = '2017'
+movies.insert_row(dict)
+
+fantasy = movies.filter(lambda m: m['Genre'] == 'Fantasy')
+fantasy_count = fantasy.aggregate(len, 'Film')
+print(fantasy_count)
+
+movies.update_row('Film', 'A Serious Man', 'Year', '2022')
